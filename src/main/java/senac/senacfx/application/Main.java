@@ -24,7 +24,7 @@ public class Main extends Application {
 
             mainScene = new Scene(scrollPane);
             primaryStage.setScene(mainScene);
-            primaryStage.setTitle("Titulo do seu sistema");
+            primaryStage.setTitle("The Crud's");
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
