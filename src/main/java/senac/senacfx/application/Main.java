@@ -29,7 +29,6 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("teste");
     }
 
     public static Scene getMainScene(){
