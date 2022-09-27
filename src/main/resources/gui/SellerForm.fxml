@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="329.0" prefWidth="600.0" styleClass="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="senac.senacfx.controller.SellerFormController">
+<AnchorPane prefHeight="329.0" prefWidth="600.0" styleClass="root" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="senac.senacfx.controller.SellerFormController">
    <children>
       <GridPane layoutX="25.0" layoutY="17.0" prefHeight="278.0" prefWidth="538.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="17.0">
         <columnConstraints>
@@ -55,11 +55,12 @@
             </HBox>
             <Label text="E-mail" GridPane.rowIndex="2" />
             <Label text="Data de nascimento" GridPane.rowIndex="3" />
-            <Label text="Salário" GridPane.rowIndex="4" />
+            <Label text="Comissão" GridPane.rowIndex="4" />
             <Label text="Departamento" GridPane.rowIndex="5" />
             <Label fx:id="labelErrorEmail" textAlignment="CENTER" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Label fx:id="labelErrorBirthDate" textAlignment="CENTER" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <Label fx:id="labelErrorBaseSalary" textAlignment="CENTER" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" />
          </children>
       </GridPane>
    </children>
