@@ -211,7 +211,7 @@ public class VendedorFormulario implements Initializable {
 
         List<Department> list = departmentService.findAll();
         obsList = FXCollections.observableArrayList(list);
-        comboBoxDepartment.setItems(obsList);
+        comboBoxClientes.setItems(obsList);
     }
 
     private void setErrorMessages(Map<String, String> errors){

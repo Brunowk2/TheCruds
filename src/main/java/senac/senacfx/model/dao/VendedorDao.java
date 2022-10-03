@@ -1,5 +1,6 @@
 package senac.senacfx.model.dao;
 
+import senac.senacfx.model.entities.Clientes;
 import senac.senacfx.model.entities.Department;
 import senac.senacfx.model.entities.Seller;
 import senac.senacfx.model.entities.Vendedor;
