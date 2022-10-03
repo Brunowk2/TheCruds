@@ -32,7 +32,7 @@ public class VendedorService {
         }
     }
 
-    public void remove(Seller obj){
+    public void remove(Vendedor obj){
         dao.deleteById(obj.getId());
     }
 }
