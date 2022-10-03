@@ -1,5 +1,8 @@
 package senac.senacfx.model.dao.impl;
 
+import senac.senacfx.model.entities.Clientes;
+
+import java.util.List;
 public interface ClientesDao {
 
     void insert(Clientes obj);
