@@ -224,6 +224,9 @@ public class VendedorDaoJDBC {
             DB.closeResultSet(rs);
         }
     }
+
+    private Clientes instantiateClientes(ResultSet rs) {
+    }
 }
 
 }
