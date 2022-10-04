@@ -70,7 +70,7 @@ public class VendedorDaoJDBC {
             st.setString(2, obj.getCpf());
             st.setString(3, obj.getEmail());
             st.setDouble(4, obj.getComissao());
-            st.setInt(5, obj.getClientes().getId());
+            st.setInt(5, obj.getClientesId().getId());
             st.setInt(6, obj.getId());
 
             st.executeUpdate();

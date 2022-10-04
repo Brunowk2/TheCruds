@@ -99,6 +99,9 @@ import java.util.Date;
                     ", comissao=" + comissao +
                     '}';
         }
+
+        public Clientes getClientesId() {
+        }
     }
 
 
