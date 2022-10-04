@@ -1,4 +1,4 @@
-package senac.senacfx.model.dao.impl;
+package senac.senacfx.model.dao;
 
 import senac.senacfx.model.entities.Clientes;
 

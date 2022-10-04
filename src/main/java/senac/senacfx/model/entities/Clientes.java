@@ -6,15 +6,18 @@ public class Clientes implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
+
     private String name;
 
-    public Clientes() {
-    }
+    private String cpf;
 
-    public Clientes(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private Integer idVendedor;
+
+//    private Integer id;
+//        private String name;
+//        private String cpf;
+//        private String idVendedor;
+
 
     public Integer getId() {
         return id;

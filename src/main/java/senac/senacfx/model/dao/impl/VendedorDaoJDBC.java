@@ -2,8 +2,11 @@ package senac.senacfx.model.dao.impl;
 
 import senac.senacfx.db.DB;
 import senac.senacfx.db.DbException;
+import senac.senacfx.model.dao.ClientesDao;
+import senac.senacfx.model.dao.VendedorDao;
+import senac.senacfx.model.entities.Clientes;
 import senac.senacfx.model.entities.Department;
-import senac.senacfx.model.entities.Seller;
+import senac.senacfx.model.entities.Vendedor;
 import senac.senacfx.model.entities.Vendedor;
 
 import java.sql.*;
@@ -12,8 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VendedorDaoJDBC {
-
+public class VendedorDaoJDBC implements VendedorDao {
     private Connection conn;
 
     public VendedorDaoJDBC(Connection conn) {
@@ -26,14 +28,15 @@ public class VendedorDaoJDBC {
         try{
             st = conn.prepareStatement(
                     "insert into Vendedor " +
-                            "(Nome, Cpf, Comissao,email, ) " +
-                            "values (?, ?, ?, ?)",
+                            "(Name, Email, BirthDate, BaseSalary, DepartmentId) " +
+                            "values (?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
 
             st.setString(1, obj.getName());
-            st.setString(2, obj.getCpf());
-            st.setDouble(3, obj.getComissao());
-            st.setString(4, obj.getEmail());
+            st.setString(2, obj.getEmail());
+            st.setDate(3, new Date(obj.getBirthDate().getTime()));
+            st.setDouble(4, obj.getBaseSalary());
+            st.setInt(5, obj.getDepartment().getId());
 
             int rowsAffected = st.executeUpdate();
 
@@ -61,7 +64,7 @@ public class VendedorDaoJDBC {
         try{
             st = conn.prepareStatement(
                     "update Vendedor " +
-                            "set Nome = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? " +
+                            "set Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? " +
                             "where id = ?");
 
             st.setString(1, obj.getName());
@@ -84,7 +87,7 @@ public class VendedorDaoJDBC {
     public void deleteById(Integer id) {
         PreparedStatement st = null;
         try{
-            st = conn.prepareStatement("delete from seller where Id = ?");
+            st = conn.prepareStatement("delete from Vendedor where Id = ?");
 
             st.setInt(1, id);
 
@@ -102,21 +105,21 @@ public class VendedorDaoJDBC {
     }
 
     @Override
-    public Seller findById(Integer id) {
+    public Vendedor findById(Integer id) {
         PreparedStatement st = null;
         ResultSet rs = null;
         try{
             st = conn.prepareStatement("" +
-                    "select seller.*, department.Name as DepName " +
-                    "from seller inner join department " +
-                    "on seller.DepartmentId = department.Id " +
-                    "where seller.Id = ?");
+                    "select Vendedor.*, department.Name as DepName " +
+                    "from Vendedor inner join department " +
+                    "on Vendedor.DepartmentId = department.Id " +
+                    "where Vendedor.Id = ?");
 
             st.setInt(1, id);
             rs = st.executeQuery();
             if (rs.next()){
                 Department dep = instantiateDepartment(rs);
-                Seller obj = instantiateSeller(rs, dep);
+                Vendedor obj = instantiateVendedor(rs, dep);
                 return obj;
 
             }
@@ -127,6 +130,9 @@ public class VendedorDaoJDBC {
             DB.closeStatement(st);
             DB.closeResultSet(rs);
         }
+    }
+
+    private Vendedor instantiateVendedor(ResultSet rs, Department dep) {
     }
 
     private Department instantiateDepartment(ResultSet rs) throws SQLException {
@@ -184,7 +190,12 @@ public class VendedorDaoJDBC {
     }
 
     @Override
-    public List<Seller> findByDepartment(Department department) {
+    public List<Vendedor> findByClientes(Clientes department) {
+        return null;
+    }
+
+    @Override
+    public List<Vendedor> findByDepartment(Department department) {
         PreparedStatement st = null;
         ResultSet rs = null;
         try{
@@ -222,6 +233,4 @@ public class VendedorDaoJDBC {
             DB.closeResultSet(rs);
         }
     }
-}
-
 }

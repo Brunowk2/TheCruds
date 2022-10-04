@@ -2,7 +2,7 @@ package senac.senacfx.model.services;
 
 import senac.senacfx.model.dao.DaoFactory;
 
-import senac.senacfx.model.dao.impl.ClientesDao;
+import senac.senacfx.model.dao.ClientesDao;
 import senac.senacfx.model.entities.Clientes;
 
 
