@@ -20,6 +20,7 @@ import senac.senacfx.gui.util.Alerts;
 import senac.senacfx.gui.util.Utils;
 import senac.senacfx.model.entities.Seller;
 import senac.senacfx.model.entities.Vendedor;
+import senac.senacfx.model.services.ClientesService;
 import senac.senacfx.model.services.DepartmentService;
 import senac.senacfx.model.services.SellerService;
 import senac.senacfx.model.services.VendedorService;
