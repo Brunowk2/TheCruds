@@ -2,8 +2,9 @@ package senac.senacfx.model.dao.impl;
 
 import senac.senacfx.db.DB;
 import senac.senacfx.db.DbException;
+import senac.senacfx.model.entities.Clientes;
 import senac.senacfx.model.entities.Department;
-import senac.senacfx.model.entities.Seller;
+import senac.senacfx.model.entities.Vendedor;
 import senac.senacfx.model.entities.Vendedor;
 
 import java.sql.*;
@@ -26,14 +27,15 @@ public class VendedorDaoJDBC {
         try{
             st = conn.prepareStatement(
                     "insert into Vendedor " +
-                            "(Nome, Cpf, Comissao,email, ) " +
+                            "(Nome, Cpf, email,comissao, ) " +
                             "values (?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
 
             st.setString(1, obj.getName());
             st.setString(2, obj.getCpf());
-            st.setDouble(3, obj.getComissao());
             st.setString(4, obj.getEmail());
+            st.setDouble(3, obj.getComissao());
+
 
             int rowsAffected = st.executeUpdate();
 
@@ -61,14 +63,14 @@ public class VendedorDaoJDBC {
         try{
             st = conn.prepareStatement(
                     "update Vendedor " +
-                            "set Nome = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? " +
+                            "set Nome = ?, cpf = ?, email = ?, comissao = ?, ClientesId = ? " +
                             "where id = ?");
 
             st.setString(1, obj.getName());
-            st.setString(2, obj.getEmail());
-            st.setDate(3, new Date(obj.getBirthDate().getTime()));
-            st.setDouble(4, obj.getBaseSalary());
-            st.setInt(5, obj.getDepartment().getId());
+            st.setString(2, obj.getCpf());
+            st.setString(3, obj.getEmail());
+            st.setDouble(4, obj.getComissao());
+            st.setInt(5, obj.getClientes().getId());
             st.setInt(6, obj.getId());
 
             st.executeUpdate();
@@ -84,7 +86,7 @@ public class VendedorDaoJDBC {
     public void deleteById(Integer id) {
         PreparedStatement st = null;
         try{
-            st = conn.prepareStatement("delete from seller where Id = ?");
+            st = conn.prepareStatement("delete from vendedor where Id = ?");
 
             st.setInt(1, id);
 
@@ -102,21 +104,21 @@ public class VendedorDaoJDBC {
     }
 
     @Override
-    public Seller findById(Integer id) {
+    public Vendedor findById(Integer id) {
         PreparedStatement st = null;
         ResultSet rs = null;
         try{
             st = conn.prepareStatement("" +
-                    "select seller.*, department.Name as DepName " +
-                    "from seller inner join department " +
-                    "on seller.DepartmentId = department.Id " +
-                    "where seller.Id = ?");
+                    "select vendedor.*, department.Name as DepName " +
+                    "from vendedor inner join department " +
+                    "on vendedor.DepartmentId = department.Id " +
+                    "where vendedor.Id = ?");
 
             st.setInt(1, id);
             rs = st.executeQuery();
             if (rs.next()){
-                Department dep = instantiateDepartment(rs);
-                Seller obj = instantiateSeller(rs, dep);
+                Vendedor dep = instantiateVendedor(rs);
+                Vendedor obj = instantiateVendedor(rs, dep);
                 return obj;
 
             }
@@ -136,42 +138,42 @@ public class VendedorDaoJDBC {
         return dep;
     }
 
-    private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException{
-        Seller obj = new Seller();
+    private Vendedor instantiateVendedor(ResultSet rs, Department dep) throws SQLException{
+        Vendedor obj = new Vendedor();
         obj.setId(rs.getInt("Id"));
         obj.setName(rs.getString("Name"));
+        obj.setCpf(rs.getString("Cpf"));
         obj.setEmail(rs.getString("Email"));
-        obj.setBaseSalary(rs.getDouble("BaseSalary"));
-        obj.setBirthDate(new java.util.Date(rs.getTimestamp("BirthDate").getTime()));
-        obj.setDepartment(dep);
+        obj.setComissao(rs.getDouble("Comissao"));
+        obj.setClientes(dep);
         return obj;
     }
     @Override
-    public List<Seller> findAll() {
+    public List<Vendedor> findAll() {
         PreparedStatement st = null;
         ResultSet rs = null;
         try{
             st = conn.prepareStatement("" +
-                    "select seller.*, department.Name as DepName " +
-                    "from seller inner join department " +
-                    "on seller.DepartmentId = department.Id " +
+                    "select vendedor.*, department.Name as DepName " +
+                    "from vendedor inner join department " +
+                    "on vendedor.DepartmentId = department.Id " +
                     "order by Name");
 
             rs = st.executeQuery();
 
-            List<Seller> list = new ArrayList<>();
-            Map<Integer, Department> map = new HashMap<>();
+            List<Vendedor> list = new ArrayList<>();
+            Map<Integer, Clientes> map = new HashMap<>();
 
             while (rs.next()){
 
-                Department dep = map.get(rs.getInt("DepartmentId"));
+                Clientes dep = map.get(rs.getInt("ClientesId"));
 
                 if (dep == null){
-                    dep = instantiateDepartment(rs);
-                    map.put(rs.getInt("DepartmentId"), dep);
+                    dep = instantiateVendedor(rs);
+                    map.put(rs.getInt("ClientesId"), dep);
                 }
 
-                Seller obj = instantiateSeller(rs, dep);
+                Vendedor obj = instantiateVendedor(rs, dep);
                 list.add(obj);
             }
             return list;
@@ -184,34 +186,34 @@ public class VendedorDaoJDBC {
     }
 
     @Override
-    public List<Seller> findByDepartment(Department department) {
+    public List<Vendedor> findByDepartment(Vendedor department) {
         PreparedStatement st = null;
         ResultSet rs = null;
         try{
             st = conn.prepareStatement("" +
-                    "select seller.*, department.Name as DepName " +
-                    "from seller inner join department " +
-                    "on seller.DepartmentId = department.Id " +
-                    "where DepartmentId = ? " +
+                    "select vendedor.*, department.Name as DepName " +
+                    "from vendedor inner join department " +
+                    "on vendedor.ClientesId = department.Id " +
+                    "where ClientesId = ? " +
                     "order by Name");
 
             st.setInt(1, department.getId());
 
             rs = st.executeQuery();
 
-            List<Seller> list = new ArrayList<>();
-            Map<Integer, Department> map = new HashMap<>();
+            List<Clientes> list = new ArrayList<>();
+            Map<Integer, Clientes> map = new HashMap<>();
 
             while (rs.next()){
 
-                Department dep = map.get(rs.getInt("DepartmentId"));
+                Clientes dep = map.get(rs.getInt("ClientesId"));
 
                 if (dep == null){
-                    dep = instantiateDepartment(rs);
-                    map.put(rs.getInt("DepartmentId"), dep);
+                    dep = instantiateClientes(rs);
+                    map.put(rs.getInt("ClientesId"), dep);
                 }
 
-                Seller obj = instantiateSeller(rs, dep);
+                Clientes obj = instantiateClientes(rs, dep);
                 list.add(obj);
             }
             return list;
